@@ -1,3 +1,5 @@
+#!/usr/bin/env python
+
 from sys import argv
 
 from scraping.get_soup import get_soup

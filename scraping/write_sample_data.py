@@ -2,6 +2,10 @@ from bs4 import BeautifulSoup
 from os import path, makedirs
 
 def write_sample_data(dir: str, tables: list):
+    """
+    Write a list of sample data tables to file
+    :param tables: A list of lists, each sublist being [input, answer] text
+    """
 
     # Create target directory if not found
     if not path.isdir(dir):
