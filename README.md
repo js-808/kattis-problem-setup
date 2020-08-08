@@ -55,7 +55,7 @@ Difficulty: 1.2
 
 Kattis [Terms of Service](https://open.kattis.com/help/tos) is clear (see ``2. License for content``); materials cannot be (a) *copied* or (b) *publically displayed*. This script gets uninformative information on memory limits / CPU time, etc. but does not represent materials concerning the *problem itself*. It would be a clear violation of the TOS to copy, or likely facilitate copying, the actual description of each problem. 
 
-**Can it copy all the problems Kattis?**
+**Can it copy all the problems from Kattis?**
 
 It could be easily made to download a description of every problem from Kattis, but for the same reasons as above, it will not be implemented.
 
