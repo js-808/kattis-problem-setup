@@ -1,6 +1,6 @@
 # kattis-problem-setup
 
-Download the sample data for any problems from [Kattis](open.kattis.com).
+Download the sample data for any problems from [Kattis](https://open.kattis.com/).
 
 ## Requirements
 
