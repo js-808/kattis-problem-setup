@@ -19,7 +19,7 @@ setup(
     url="https://github.com/bradendubois/kattis-problem-setup",
     author="Braden Dubois",
     author_email="braden.dubois@usask.ca",
-    packages=["kattis_setup"],
+    packages=["kattis_download"],
     keywords="kattis parsing beautifulsoup",
     include_package_data=True,
     install_requires=dependencies,
