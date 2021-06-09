@@ -94,6 +94,9 @@ def write_sample_data(dir: str, tables: list):
 
 
 def run():
+    """
+    Returns a list of problem data dictionaries if multiple problems are given, just the single dictionary if only one is given.
+    """
 
     parser = ArgumentParser(prog="kattis-download")
 
