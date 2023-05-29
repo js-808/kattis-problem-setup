@@ -36,19 +36,19 @@ def parse_soup(soup: BeautifulSoup) -> dict:
     # Store the actual title of the problem
     p["title"] = soup.find("h1").text
 
-    # Nested "sidebar-info" divs; recursively move inwards until at deepest
-    sidebar = soup.find("div", {"class": "sidebar-info"})
-    while sidebar.find("div", {"class": "sidebar-info"}):
-        sidebar = sidebar.find("div", {"class": "sidebar-info"})
-
-    # Last level deep has 2, the first is the buttons, second is problem data
-    sidebar = sidebar.find_next_sibling("div")
-
-    # Take the value in each attribute, ignore first (ID)
-    attributes = [p.text.split(":")[1].strip() for p in sidebar.findChildren("p")][1:]
-    attribute_keys = ["cpu", "memory", "difficulty"]
-    for _ in range(len(attribute_keys)):
-        p[attribute_keys[_]] = attributes[_]
+    # Get the cpu time limit, memory limit, and difficulty of the problem 
+    metadata = soup.find_all("div", {"class":"metadata_list-item"})
+    tag_attr_name_mapping = {'cpu_limit':'cpu',
+                     'mem_limit':'memory', 
+                     'difficulty':'difficulty'}
+    for item in metadata:
+        try:
+            data_name = item.attrs['data-name'].split('-')[1]
+            if data_name in tag_attr_name_mapping:
+                children = item.findChildren('span')
+                p[tag_attr_name_mapping[data_name]] = children[-1].text
+        except:
+            pass
 
     # Find all tables with sample data in the Soup
     tables = soup.findAll("table", {"summary": "sample data"})
