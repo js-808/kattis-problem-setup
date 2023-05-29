@@ -11,6 +11,40 @@ from urllib import request
 
 url = "https://open.kattis.com/problems/"
 
+# All Kattis accepted languages and correlated file extensions
+LANGUAGES = {
+    "apl": ".apl",
+    "bash": ".sh", 
+    "c": ".c",
+    "c#": ".cs",
+    "c++": ".cc",
+    "cobol": ".cob",
+    "lisp": ".lisp",
+    "dart": ".dart",
+    "f#": ".fs",
+    "fortran": ".f90",
+    "gerbil": ".ss",
+    "go": ".go",
+    "haskell": ".hs",
+    "java": ".java",
+    "javascript": ".js",
+    "spidermonkey": ".js",
+    "julia": ".jl",
+    "kotlin": ".kt",
+    "ocaml": ".ml", 
+    "objective-c": ".m", 
+    "php": ".php", 
+    "pascal": ".pas",
+    "prolog": ".pl", 
+    "python2": ".py",
+    "python3": ".py",
+    "python": ".py",
+    "ruby": ".rb", 
+    "rust": ".rs",
+    "typescript": ".ts",
+    "visual-basic": ".vb"
+}
+
 
 def get_soup(problem: str) -> BeautifulSoup:
     """
@@ -92,6 +126,26 @@ def write_sample_data(dir: str, tables: list):
         with open(dir + "/" + "sample" + str(i+1) + "_ans", "w") as f:
             f.write(tables[i][1])
 
+def create_empty_code_file(dir: str, prob_id: str, lang: str):
+    """Create an empty code file with a given name and appropriate language extension.
+
+    :param dir: The directory to write the new code file to 
+    :param prob_id: The Kattis problem id 
+    :param lang: The programming language 
+    """
+    # Check if language is valid
+    lang_ = lang.lower()
+    if lang_ not in LANGUAGES:
+        raise ValueError(f"lang {lang} not valid language")
+
+    # If valid, proceed to create the appropriate code file 
+    # (if the file already exists, then don't overwrite it)
+    ext = LANGUAGES[lang_]
+    if not path.isdir(dir):
+        makedirs(dir)
+    new_file = path.join(dir, f'{prob_id}{ext}')
+    with open(new_file, 'a'): pass 
+
 
 def run():
     """
@@ -103,6 +157,12 @@ def run():
     parser.add_argument('problems', metavar="N", nargs='+', help="name(s) of problem IDs on Kattis")
     parser.add_argument('-w', dest="write", action="store_const", const=True, default=False,
                         help="write data to a directory with same name as problem")
+    parser.add_argument('-l', '--language', dest='language', 
+                        choices=list(LANGUAGES),
+                        help="create empty code file of the given language with the same name as the problem \
+                            (`-w` flag must be set for this argument to have any effect).\
+                            Allowed values are " + ', '.join(list(LANGUAGES)),
+                        metavar='')
 
     if len(argv) < 2:
         parser.print_help()
@@ -135,9 +195,17 @@ def run():
         print("Difficulty:", parsed["difficulty"], "\n")
 
         # Write the sample data to files
-        if "tables" in parsed and namespace.write:
-            print("Writing sample data.")
-            write_sample_data(problem, parsed["tables"])
+        # and create empty code file of appropriate language (if specified)
+        if namespace.write:
+            if "tables" in parsed:
+                print("Writing sample data.")
+                write_sample_data(problem, parsed["tables"])
+            if namespace.language is not None:
+                try:
+                    print("Creating empty code file.")
+                    create_empty_code_file(problem, problem, namespace.language)
+                except ValueError as e:
+                    print(f'ERROR: {e}. Continuing without creating code file . . .')
 
         problem_data.append(parsed)
 

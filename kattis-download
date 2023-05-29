@@ -1,0 +1,5 @@
+#!/bin/sh
+
+# Call the main .py script to download kattis problems
+# and pass all command-line arguments to the script
+python "${BASH_SOURCE%/*}/kattis_download/main.py" "$@"
